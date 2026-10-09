@@ -1,3 +1,9 @@
+/* ==========================================================
+   Lahari Krishna Salian - Resume Portfolio
+   Baby pink, coquette-inspired. Plain CSS, no JavaScript.
+   Fonts load from Google Fonts with safe system fallbacks,
+   so the page still looks right if the network blocks them.
+   ========================================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;600;700&display=swap");
 
@@ -471,5 +477,265 @@ a:focus-visible {
 
     section:hover {
         transform: none;
+    }
+}
+
+
+/* ==========================================================
+   INTERACTION LAYER
+   All motion is wrapped in no-preference, so visitors who ask
+   for reduced motion get a calm, static page.
+   ========================================================== */
+
+/* ---------- Scrollbar, form accent, anchor offset ---------- */
+html {
+    scrollbar-color: var(--accent) var(--bg);
+    scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--accent);
+    border-radius: 999px;
+    border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--heading);
+}
+
+section {
+    scroll-margin-top: var(--space-4);
+}
+
+/* ---------- Hero: faint dotted corner accents ---------- */
+header::after {
+    content: "";
+    position: absolute;
+    right: 28px;
+    top: 36px;
+    width: 84px;
+    height: 84px;
+    background-image: radial-gradient(var(--accent) 1.5px, transparent 1.6px);
+    background-size: 14px 14px;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* ---------- Section: bar grows, bullets bloom ---------- */
+h2::after {
+    transition: width 0.4s ease;
+}
+
+section:hover h2::after,
+section:focus-within h2::after {
+    width: 120px;
+}
+
+li::before {
+    transition: transform var(--ease), background-color var(--ease);
+}
+
+li {
+    transition: padding-left var(--ease), color var(--ease);
+}
+
+li:hover {
+    padding-left: 1.6rem;
+    color: var(--heading-deep);
+}
+
+li:hover::before {
+    transform: scale(1.5);
+    background-color: var(--heading);
+}
+
+/* skills rows keep their layout; only the label warms up */
+.skills li:hover {
+    padding-left: 0;
+    color: var(--text);
+}
+
+.skills li:hover strong {
+    color: var(--heading-deep);
+}
+
+.skills strong {
+    transition: color var(--ease);
+}
+
+/* ---------- Contact links: fill and press ---------- */
+.contact a {
+    position: relative;
+}
+
+.contact a:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.contact a:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: none;
+}
+
+/* ---------- Skill pills: tilt, press, neighbour dim ---------- */
+.tag {
+    cursor: default;
+}
+
+.tag:hover {
+    transform: translateY(-3px) rotate(-2deg);
+    box-shadow: 0 6px 12px rgba(192, 91, 122, 0.18);
+}
+
+.tags:hover .tag:not(:hover) {
+    opacity: 0.6;
+}
+
+.tag {
+    transition: background-color var(--ease), border-color var(--ease),
+                transform var(--ease), box-shadow var(--ease), opacity var(--ease);
+}
+
+/* ---------- Projects: marker highlight fills on hover ---------- */
+#projects h3 {
+    background-image: linear-gradient(var(--accent-soft), var(--accent-soft));
+    background-size: 100% 38%;
+    background-position: 0 92%;
+    background-repeat: no-repeat;
+    transition: background-size 0.35s ease, color var(--ease);
+    cursor: default;
+}
+
+#projects h3:hover,
+#projects h3:has(+ p:hover) {
+    background-size: 100% 100%;
+    color: var(--heading);
+}
+
+#projects h3 + p {
+    transition: border-color var(--ease), padding-left var(--ease),
+                border-left-width var(--ease);
+}
+
+#projects h3:hover + p,
+#projects h3 + p:hover {
+    border-left-color: var(--heading);
+    border-left-width: 4px;
+    padding-left: calc(var(--space-3) - 2px);
+}
+
+/* ---------- Text links: underline draws in ---------- */
+a:not(.contact a) {
+    text-decoration: none;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 100% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--ease), color var(--ease);
+}
+
+a:not(.contact a):hover {
+    background-size: 100% 100%;
+}
+
+/* ---------- Motion (only if the visitor allows it) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+
+    /* One orchestrated page-load moment: hero lifts in, in sequence */
+    @keyframes lift-in {
+        from { opacity: 0; transform: translateY(14px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes draw-line {
+        from { transform: scaleX(0); }
+        to   { transform: scaleX(1); }
+    }
+
+    @keyframes drift {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(-6px); }
+    }
+
+    header h1,
+    header .role,
+    header .location,
+    header .contact a {
+        animation: lift-in 0.7s ease both;
+    }
+
+    header h1            { animation-delay: 0.05s; }
+    header .role         { animation-delay: 0.2s; }
+    header .location     { animation-delay: 0.3s; }
+    header .contact a:nth-child(1) { animation-delay: 0.55s; }
+    header .contact a:nth-child(2) { animation-delay: 0.65s; }
+    header .contact a:nth-child(3) { animation-delay: 0.75s; }
+
+    header .divider {
+        animation: draw-line 0.8s ease 0.4s both;
+        transform-origin: center;
+    }
+
+    header::after {
+        animation: drift 7s ease-in-out infinite;
+    }
+
+    /* Scroll-linked features, in browsers that support them */
+    @supports (animation-timeline: view()) {
+
+        @keyframes progress {
+            from { transform: scaleX(0); }
+            to   { transform: scaleX(1); }
+        }
+
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* thin reading-progress bar along the top of the screen */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: var(--heading);
+            transform-origin: left;
+            z-index: 10;
+            animation: progress linear both;
+            animation-timeline: scroll(root);
+        }
+
+        /* sections settle in as they enter the viewport */
+        section {
+            animation: reveal linear both;
+            animation-timeline: view();
+            animation-range: entry 0% entry 35%;
+        }
+    }
+}
+
+/* ---------- Touch devices: no sticky hover states ---------- */
+@media (hover: none) {
+    section:hover,
+    .tag:hover,
+    .contact a:hover {
+        transform: none;
+    }
+
+    .tags:hover .tag:not(:hover) {
+        opacity: 1;
     }
 }
